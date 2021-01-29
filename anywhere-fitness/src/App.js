@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 
 import './App.css';
 
@@ -11,8 +12,19 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <Route exact path="/" component={Login} />
+       <div className="App">
+        <div className="nav-bar">
+            <nav>
+              <Link to="/Login">Login</Link>
+              <Link onClick={logout}>Logout</Link>
+              <Link to="/SignUp">Sign Up</Link>
+            </nav>
+          </div>
+          
+        <Switch>
+          <Route exact path="/Login" component={Login} />
+          <Route exact path="/SignUp"component={SignUp} />
+        </Switch>
             
       </div>
     </Router>
