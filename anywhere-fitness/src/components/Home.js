@@ -1,12 +1,10 @@
 import React from "react";
-import "../styles/nav.css";
-import "../styles/home.css";
-import dummy1 from "../assets/dummy-img1.jpg";
-import dummy2 from "../assets/dummy-img2.jpg";
-import dummy3 from "../assets/dummy-img4.jpg";
-import dummy4 from "../assets/dummy-img5.jpg";
-import { Button } from "@material-ui/core";
-import { Switch, Route, Link } from "react-router-dom";
+import "./styles/nav.css";
+import "./styles/home.css";
+import dummy1 from "./assets/dummy-img1.jpg";
+import dummy2 from "./assets/dummy-img2.jpg";
+import dummy3 from "./assets/dummy-img4.jpg";
+import dummy4 from "./assets/dummy-img5.jpg";
 
 export default function Home() {
   return (
@@ -15,16 +13,17 @@ export default function Home() {
         <nav>
           <ul>
             <li>
-              <Button>Home</Button>
+              <button>Home</button>
             </li>
             <li>
-              <Button>Memberships</Button>
+              <button>Memberships</button>
             </li>
             <li>
-              <Button>Instructors</Button>
+              <button>Instructors</button>
             </li>
             <li>
-              <Button>Signup</Button>
+              <button>Signup</button>
+
             </li>
           </ul>
         </nav>

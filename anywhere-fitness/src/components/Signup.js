@@ -36,6 +36,13 @@ class SignUp extends React.Component {
             .catch(err => console.log(err));
     };
 
+    ToggleButton() {
+        this.setState((currentState) => ({
+            textDisplay: currentState.textDisplay, 
+        }));
+    }
+
+
     render() {
         return (
             <div>
