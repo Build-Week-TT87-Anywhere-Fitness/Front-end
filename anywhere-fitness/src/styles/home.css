@@ -1,0 +1,52 @@
+main-pitch {
+  color: white;
+  background-color: #6a0dad;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  padding-right: 40px;
+  padding-left: 40px;
+  margin-right: -40px;
+  margin-left: -40px;
+}
+
+h1 {
+  padding-top: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-top: -2rem;
+  margin-right: -40rem;
+}
+
+body {
+  background-color: #18191a;
+  color: white;
+}
+
+.intro-pitch {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  padding-bottom: 5rem;
+}
+
+.btn {
+  text-align: center;
+  padding-top: 2rem;
+}
+
+button {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.dummy-gallery {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
