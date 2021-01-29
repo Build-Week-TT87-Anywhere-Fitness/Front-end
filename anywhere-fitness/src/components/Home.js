@@ -1,11 +1,10 @@
 import React from "react";
-import "../styles/nav.css";
-import "../styles/home.css";
-import dummy1 from "../assets/dummy-img1.jpg";
-import dummy2 from "../assets/dummy-img2.jpg";
-import dummy3 from "../assets/dummy-img4.jpg";
-import dummy4 from "../assets/dummy-img5.jpg";
-import { Switch, Route, Link } from "react-router-dom";
+import "./styles/nav.css";
+import "./styles/home.css";
+import dummy1 from "./assets/dummy-img1.jpg";
+import dummy2 from "./assets/dummy-img2.jpg";
+import dummy3 from "./assets/dummy-img4.jpg";
+import dummy4 from "./assets/dummy-img5.jpg";
 
 export default function Home() {
   return (
@@ -24,6 +23,7 @@ export default function Home() {
             </li>
             <li>
               <button>Signup</button>
+
             </li>
           </ul>
         </nav>

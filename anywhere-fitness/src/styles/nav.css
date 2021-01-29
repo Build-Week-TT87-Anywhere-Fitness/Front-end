@@ -1,0 +1,13 @@
+nav {
+  background-color: whitesmoke;
+}
+
+ul {
+  display: inline-flex;
+  flex-direction: row;
+}
+
+li {
+  display: inline-flex;
+  justify-content: space-evenly;
+}
