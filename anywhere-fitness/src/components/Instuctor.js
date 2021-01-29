@@ -9,11 +9,13 @@ export default function Instuctor() {
   const [instuctorForm, setInstuctorForm] = userState({
     username: "",
     password: "",
+    authCode: "",
   });
 
   const [errorState, setErrorState] = useState({
     username: "",
     password: "",
+    authCode: "",
   });
 
   const validate = (e) => {
@@ -67,6 +69,16 @@ export default function Instuctor() {
           value={instuctorForm.password}
         />
         {errorState.password ? <p>{errorState.password}</p> : null}
+      </label>
+      <label htmlFor="authCode">
+        <input
+          type="text"
+          id="authCode"
+          name="authCode"
+          onChange={inputchange}
+          value={instuctorForm.authCode}
+        />
+        {errorState.password ? <p>{errorState.authCode}</p> : null}
       </label>
     </form>
   );
