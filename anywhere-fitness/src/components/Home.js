@@ -26,7 +26,7 @@ class Home extends React.Component {
             reschedule or cancel an upcoming appointment or reservation right
             from our mobile app.
             <div className="btn">
-                <button>Join Now</button>
+              <button>Join Now</button>
               </div>
             </p>
           </div>
@@ -58,3 +58,4 @@ class Home extends React.Component {
   }
 }
 export default Home;
+         
