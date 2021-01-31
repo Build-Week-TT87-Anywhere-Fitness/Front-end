@@ -1,16 +1,8 @@
-.App {
-  text-align: center;
-}
-
-
-/* Nav Styling in App.js */
-.nav-bar {
+nav {
   background-color: whitesmoke;
-  text-decoration: none;
-  font-size: 2rem;
 }
 
-/* ul {
+ul {
   display: inline-flex;
   flex-direction: row;
 }
@@ -18,4 +10,4 @@
 li {
   display: inline-flex;
   justify-content: space-evenly;
-} */
+}

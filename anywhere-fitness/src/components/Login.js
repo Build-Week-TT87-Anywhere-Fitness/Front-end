@@ -1,7 +1,7 @@
 import React from "react";
 import axios from 'axios';
 
-  class Login extends React.Component {
+class Login extends React.Component {
     state = {
         credentials: {
             username: '',
@@ -25,51 +25,51 @@ import axios from 'axios';
             .then(res => {
                 console.log(res)
                 localStorage.setItem("token", res.data.payload);
-                this.props.history.push("/BubblePage");
+                this.props.history.push("/");
             })
             .catch(err => console.log(err));
     };
 
     render() {
-      return (
-         <div>
-             <h1>Anywhere Fitness</h1>
+        return (
+            <div>
+                <h1>Anywhere Fitness</h1>
                 <h3>Get Your Workout In Anywhere</h3>
                 <form onSubmit={this.login}>
                     <div className="login-page">
 
-                <div className="username-field">
-                    <label>
-                        Username: &nbsp;
+                        <div className="username-field">
+                            <label>
+                                Username: &nbsp;
                         <input
-                            type="text"
-                            name="username"
-                            value={this.state.credentials.username}
-                            onChange={this.handleChange}
-                        />
-                    </label>
-                </div>
+                                    type="text"
+                                    name="username"
+                                    value={this.state.credentials.username}
+                                    onChange={this.handleChange}
+                                />
+                            </label>
+                        </div>
 
-                <div className="password-field">
-                    <label>
-                        Password: &nbsp;
+                        <div className="password-field">
+                            <label>
+                                Password: &nbsp;
                         <input
-                            type="password"
-                            name="password"
-                            value={this.state.credentials.password}
-                            onChange={this.handleChange}
-                        />
-                    </label>
-                </div>
+                                    type="password"
+                                    name="password"
+                                    value={this.state.credentials.password}
+                                    onChange={this.handleChange}
+                                />
+                            </label>
+                        </div>
 
-                <div className="login-button">
-                    <button>Login</button>
-                </div>
+                        <div className="login-button">
+                            <button>Login</button>
+                        </div>
 
                     </div>
                 </form>
             </div>
-      );
+        );
     }
 };
 

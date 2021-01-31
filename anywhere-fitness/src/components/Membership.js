@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from 'axios';
+import * as yup from 'yup';
 
 const formSchema = yup.object().shape({
   username: yup.string().required("Username is required "),
@@ -6,7 +8,7 @@ const formSchema = yup.object().shape({
 });
 
 export default function Membership() {
-  const [memberForm, setMemberForm] = userState({
+  const [memberForm, setMemberForm] = useState({
     username: "",
     password: "",
   });
@@ -21,7 +23,7 @@ export default function Membership() {
       .reach(formSchema, e.target.name)
       .validate(e.target.value)
       .then((valid) => {
-        setErrorState({ ...errotState, [e.target.name]: "" });
+        setErrorState({ ...errorState, [e.target.name]: "" });
       })
       .catch((err) => {
         setErrorState({

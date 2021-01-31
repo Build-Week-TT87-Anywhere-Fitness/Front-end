@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import axios from 'axios';
+import * as yup from 'yup';
 
 const formSchema = yup.object().shape({
   username: yup.string().required("Username is required "),
   password: yup.string().required(" password is required "),
 });
 
-export default function Instuctor() {
-  const [instuctorForm, setInstuctorForm] = userState({
+export default function Instructor() {
+  const [instuctorForm, setInstuctorForm] = useState({
     username: "",
     password: "",
     authCode: "",
@@ -23,7 +25,7 @@ export default function Instuctor() {
       .reach(formSchema, e.target.name)
       .validate(e.target.value)
       .then((valid) => {
-        setErrorState({ ...errotState, [e.target.name]: "" });
+        setErrorState({ ...errorState, [e.target.name]: "" });
       })
       .catch((err) => {
         setErrorState({
