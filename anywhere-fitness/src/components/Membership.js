@@ -1,0 +1,73 @@
+import React, { useState } from "react";
+
+const formSchema = yup.object().shape({
+  username: yup.string().required("Username is required "),
+  password: yup.string().required(" password is required "),
+});
+
+export default function Membership() {
+  const [memberForm, setMemberForm] = userState({
+    username: "",
+    password: "",
+  });
+
+  const [errorState, setErrorState] = useState({
+    username: "",
+    password: "",
+  });
+
+  const validate = (e) => {
+    yup
+      .reach(formSchema, e.target.name)
+      .validate(e.target.value)
+      .then((valid) => {
+        setErrorState({ ...errotState, [e.target.name]: "" });
+      })
+      .catch((err) => {
+        setErrorState({
+          ...errorState,
+          [e.target.name]: err.errors[0],
+        });
+      });
+  };
+
+  const inputchange = (e) => {
+    e.persist();
+    validate(e);
+    setMemberForm({ ...memberForm, [e.target.name]: e.target.value });
+  };
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    axios
+      .post("https://reqres.in/api/membership", memberForm)
+      .then((response) => console.log("form submitted", response))
+      .catch((err) => console.log(err));
+  };
+
+  return (
+    <form onSubmit={submitForm}>
+      <h2> Welecome, Please Sign In </h2>
+      <label htmlFor="username">
+        <input
+          type="text"
+          id="username"
+          name="username"
+          onChange={inputchange}
+          value={memberForm.username}
+        />
+        {errorState.username ? <p>{errorState.username}</p> : null}
+      </label>
+      <label htmlFor="password">
+        <input
+          type="text"
+          id="passowrd"
+          name="password"
+          onChange={inputchange}
+          value={memberForm.password}
+        />
+        {errorState.password ? <p>{errorState.password}</p> : null}
+      </label>
+    </form>
+  );
+}
