@@ -8,7 +8,6 @@ class SignUp extends React.Component {
             lastName: '',
             email: '',
             birthdate: '',
-            phoneNumber: '',
             username: '',
             password: '',
             authCode: '',
@@ -53,7 +52,7 @@ class SignUp extends React.Component {
 
                     <div className="firstName-field">
                             <label>
-                                First Name: &nbsp;
+                                First Name &nbsp;
                         <input
                                     type="text"
                                     name="firstName"
@@ -65,7 +64,7 @@ class SignUp extends React.Component {
 
                         <div className="lastName-field">
                             <label>
-                                Last Name: &nbsp;
+                                Last Name &nbsp;
                         <input
                                     type="text"
                                     name="lastName"
@@ -77,7 +76,7 @@ class SignUp extends React.Component {
 
                         <div className="email-field">
                             <label>
-                            Email: &nbsp;
+                            Email &nbsp;
                         <input
                                     type="text"
                                     name="email"
@@ -87,33 +86,9 @@ class SignUp extends React.Component {
                             </label>
                         </div>
 
-                        <div className="birthdate-field">
-                            <label>
-                            Birthdate: &nbsp;
-                        <input
-                                    type="text"
-                                    name="birthdate"
-                                    value={this.state.credentials.birthdate}
-                                    onChange={this.handleChange}
-                                />
-                            </label>
-                        </div>
-
-                        <div className="phoneNumber-field">
-                            <label>
-                            Phone Number: &nbsp;
-                        <input
-                                    type="text"
-                                    name="phoneNumber"
-                                    value={this.state.credentials.phoneNumber}
-                                    onChange={this.handleChange}
-                                />
-                            </label>
-                        </div>
-
                         <div className="username-field">
                             <label>
-                                Username: &nbsp;
+                                Username &nbsp;
                         <input
                                     type="text"
                                     name="username"
@@ -125,7 +100,7 @@ class SignUp extends React.Component {
 
                         <div className="password-field">
                             <label>
-                                Password: &nbsp;
+                                Password &nbsp;
                         <input
                                     type="password"
                                     name="password"
@@ -135,11 +110,23 @@ class SignUp extends React.Component {
                             </label>
                         </div>
 
+                        <div className="birthdate-field">
+                            <label>
+                            I am over 18 years old &nbsp;
+                        <input
+                                    type="checkbox"
+                                    name="birthdate"
+                                    value={this.state.credentials.birthdate}
+                                    onChange={this.handleChange}
+                                />
+                            </label>
+                        </div>
+
                         <div className="authCode-field">
                             <label>
-                                Instructor Code: &nbsp;
+                                Instructor Code &nbsp;
                         <input
-                                    type="text"
+                                    type="checkbox"
                                     name="authCode"
                                     value={this.state.credentials.authCode}
                                     onChange={this.handleChange}

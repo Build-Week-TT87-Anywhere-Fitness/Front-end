@@ -7,15 +7,17 @@ const formSchema = yup.object().shape({
   password: yup.string().required(" password is required "),
 });
 
-export default function Membership() {
-  const [memberForm, setMemberForm] = useState({
+export default function LoginInstructor() {
+  const [instuctorForm, setInstuctorForm] = useState({
     username: "",
     password: "",
+    authCode: "",
   });
 
   const [errorState, setErrorState] = useState({
     username: "",
     password: "",
+    authCode: "",
   });
 
   const validate = (e) => {
@@ -36,13 +38,13 @@ export default function Membership() {
   const inputchange = (e) => {
     e.persist();
     validate(e);
-    setMemberForm({ ...memberForm, [e.target.name]: e.target.value });
+    setInstuctorForm({ ...instuctorForm, [e.target.name]: e.target.value });
   };
 
   const submitForm = (e) => {
     e.preventDefault();
     axios
-      .post("https://reqres.in/api/membership", memberForm)
+      .post("https://reqres.in/api/membership", instuctorForm)
       .then((response) => console.log("form submitted", response))
       .catch((err) => console.log(err));
   };
@@ -56,9 +58,9 @@ export default function Membership() {
           id="username"
           name="username"
           onChange={inputchange}
-          value={memberForm.username}
+          value={instuctorForm.username}
         />
-        {errorState.username ? <p>{errorState.username}</p> : null}
+        {errorState.password ? <p>{errorState.username}</p> : null}
       </label>
       <label htmlFor="password">
         <input
@@ -66,9 +68,19 @@ export default function Membership() {
           id="passowrd"
           name="password"
           onChange={inputchange}
-          value={memberForm.password}
+          value={instuctorForm.password}
         />
         {errorState.password ? <p>{errorState.password}</p> : null}
+      </label>
+      <label htmlFor="authCode">
+        <input
+          type="text"
+          id="authCode"
+          name="authCode"
+          onChange={inputchange}
+          value={instuctorForm.authCode}
+        />
+        {errorState.password ? <p>{errorState.authCode}</p> : null}
       </label>
     </form>
   );

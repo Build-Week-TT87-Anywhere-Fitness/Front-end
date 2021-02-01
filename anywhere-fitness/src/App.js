@@ -1,10 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Home from "./components/Home";
-import Instructor from "./components/Instructor";
-import Membership from "./components/Membership";
+import LoginInstructor from "./components/LoginInstructor";
+import LoginMembership from "./components/LoginMembership";
 
 import './App.css';
 
@@ -12,25 +11,24 @@ function App() {
 
   return (
     <Router>
-       <div className="App">
-        <div className="nav-bar">
-            <nav>
-              <Link to="/Home">Home</Link>
-              <Link to="/SignUp">Sign-Up</Link>
-              <Link to="/Login">Login</Link>
-              <Link to="/Instructor">Instructor</Link>
-              <Link to="/Membership">Membership</Link>
-            </nav>
+      <div className="App">
+        <nav>
+          <div className="nav-bar">
+            <Link to="/Home">Home</Link>
+            <Link to="/SignUp">Sign-Up</Link>
+            <Link to="/LoginInstructor">Instructor</Link>
+            <Link to="/LoginMembership">Membership</Link>
           </div>
-          
+        </nav>
+
+
         <Switch>
-          <Route exact path="/Home"component={Home} />
-          <Route exact path="/SignUp"component={SignUp} />
-          <Route exact path="/Login" component={Login} />
-          <Route exact path="/Instructor"component={Instructor} />
-          <Route exact path="/Membership"component={Membership} />
+          <Route exact path="/Home" component={Home} />
+          <Route exact path="/SignUp" component={SignUp} />
+          <Route exact path="/LoginInstructor" component={LoginInstructor} />
+          <Route exact path="/LoginMembership" component={LoginMembership} />
         </Switch>
-            
+
       </div>
     </Router>
   );

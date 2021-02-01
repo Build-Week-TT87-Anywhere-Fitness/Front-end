@@ -1,7 +1,15 @@
+/* html {
+  background: url(/Users/dakoduru/Documents/Unit-3/Front-end/anywhere-fitness/src/assets/kelly-sikkema-IZOAOjvwhaM-unsplash.jpg) ; 
+  background-size: cover;
+} */
+
 .App {
   text-align: center;
 }
 
+.nav-bar {
+  text-decoration: none;
+}
 
 /* Nav Styling in App.js */
 .nav-bar {
@@ -19,3 +27,17 @@ li {
   display: inline-flex;
   justify-content: space-evenly;
 } */
+
+.signup-page {
+  font-size: 2rem;
+  background-color: white;
+  color: black;
+  opacity: 0.7;
+  margin-left: 25rem;
+  margin-right: 25rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  border-radius: 25px;
+  box-shadow: 10px 10px 5px;
+}
+
