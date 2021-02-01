@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import axios from 'axios';
+import * as yup from 'yup';
 
 const formSchema = yup.object().shape({
   username: yup.string().required("Username is required "),
-  password: yup.string().required(" password is required "),
+  password: yup.string().required("Password is required "),
 });
 
 export default function Instuctor() {
