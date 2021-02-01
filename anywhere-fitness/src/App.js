@@ -5,7 +5,6 @@ import SignUp from "./components/SignUp";
 import Home from "./components/Home";
 import InstructorLogin from "./components/InstructorLogin";
 import MemberLogin from "./components/MemberLogin";
-
 import "./App.css";
 
 function App() {
