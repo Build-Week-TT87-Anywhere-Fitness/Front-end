@@ -8,7 +8,7 @@ const formSchema = yup.object().shape({
 });
 
 export default function Instuctor() {
-  const [instuctorForm, setInstuctorForm] = userState({
+  const [instuctorForm, setInstuctorForm] = useState({
     username: "",
     password: "",
     authCode: "",
@@ -25,7 +25,7 @@ export default function Instuctor() {
       .reach(formSchema, e.target.name)
       .validate(e.target.value)
       .then((valid) => {
-        setErrorState({ ...errotState, [e.target.name]: "" });
+        setErrorState({ ...errorState, [e.target.name]: "" });
       })
       .catch((err) => {
         setErrorState({
