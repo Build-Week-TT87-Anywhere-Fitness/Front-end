@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { UserContext } from '../contexts/UserContext';
 import axios from "axios";
 import * as yup from "yup";
 
@@ -7,48 +9,60 @@ const formSchema = yup.object().shape({
   password: yup.string().required(" password is required "),
 });
 
-export default function Membership() {
-  const [memberForm, setMemberForm] = useState({
-    username: "",
-    password: "",
-  });
+const initialUserCredentials = {
+  username: "",
+  password: "",
+  authCode: "",
+};
 
-  const [errorState, setErrorState] = useState({
-    username: "",
-    password: "",
-  });
+export default function InstructorLogin() {
+  const [userCredentials, setUserCredentials] = useState(initialUserCredentials)
+  const [error, setError] = useState("");
+  const {setUser} = useContext(UserContext);
+  const history = useHistory();
 
   const validate = (e) => {
     yup
       .reach(formSchema, e.target.name)
       .validate(e.target.value)
       .then((valid) => {
-        setErrorState({ ...errorState, [e.target.name]: "" });
+        setError({ ...error, [e.target.name]: "" });
       })
       .catch((err) => {
-        setErrorState({
-          ...errorState,
+        setError({
+          ...error,
           [e.target.name]: err.errors[0],
         });
       });
   };
 
-  const inputchange = (e) => {
+  const handleChange = (e) => {
     e.persist();
     validate(e);
-    setMemberForm({ ...memberForm, [e.target.name]: e.target.value });
+    setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
   };
 
-  const submitForm = (e) => {
+  const loginMember = (e) => {
     e.preventDefault();
     axios
-      .post("https://reqres.in/api/membership", memberForm)
-      .then((response) => console.log("form submitted", response))
-      .catch((err) => console.log(err));
-  };
+      .post("https://localhost:3000", userCredentials)
+      .then((response) => {
+        console.log("form submitted", response.data);
+        const token = response.data.token;
+        localStorage.setItem("token",token);
+        setUser({username: userCredentials.username, id: response.data.id});
+        setError("");
+        history.push("/MemberLogin");
+      })
+      .catch((err) => {
+        console.log(err);
+        setError('User not found. Please signup.')
+      });
+  }
+
 
   return (
-    <form onSubmit={submitForm}>
+    <form onSubmit={loginMember}>
       <h2> Welecome, Please Sign In </h2>
       <div>
         <label htmlFor="username">
@@ -57,10 +71,10 @@ export default function Membership() {
             type="text"
             id="username"
             name="username"
-            onChange={inputchange}
-            value={memberForm.username}
+            onChange={handleChange}
+            value={userCredentials.username}
           />
-          {errorState.username ? <p>{errorState.username}</p> : null}
+          {error.username ? <p>{error.username}</p> : null}
         </label>
       </div>
       <div>
@@ -70,10 +84,10 @@ export default function Membership() {
             type="text"
             id="passowrd"
             name="password"
-            onChange={inputchange}
-            value={memberForm.password}
+            onChange={handleChange}
+            value={userCredentials.password}
           />
-          {errorState.password ? <p>{errorState.password}</p> : null}
+          {error.password ? <p>{error.password}</p> : null}
         </label>
       </div>
       <div>
