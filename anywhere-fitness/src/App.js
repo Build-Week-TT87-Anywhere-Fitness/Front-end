@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Route, Link, Switch } from "react-router-dom";
-import { UserContext } from './contexts/UserContexts';
+import { Route, Link } from "react-router-dom";
+import { InstructorContext } from './contexts/InstructorContext';
 import PrivateRoute from './utils/PrivateRoute';
 
 import SignUp from "./components/SignUp";
@@ -19,8 +19,6 @@ const initialUser = [{
 
 function App() {
   const [user, setUser] = useState(initialUser);
-  // const [isOpen, setIsopen] = useState(false);
-  // const toggle = () => setIsopen(!isOpen);
   const value = {user: user, setUser: setUser};
 
   return (
@@ -34,8 +32,8 @@ function App() {
           </nav>
         </div>
 
-        <Switch>
-          <UserContext.Provider>
+
+          <InstructorContext.Provider>
           <Route exact path="/Home" component={Home} />
           <Route exact path="/SignUp" component={SignUp} />
           <Route exact path="/InstructorLogin" component={InstructorLogin} />
@@ -44,8 +42,8 @@ function App() {
           <PrivateRoute path="/InstructorForm" component={InstructorForm}>Instructors</PrivateRoute>
           <PrivateRoute path="/MemberForm" component={MemberForm}>Members</PrivateRoute>
 
-          </UserContext.Provider>
-        </Switch>
+          </InstructorContext.Provider>
+       
       </div>
   );
 }
