@@ -1,59 +1,60 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { UserContext } from '../contexts/UserContext';
 import axios from "axios";
 
-// const initialUserCredentials = {
-//   username: "",
-//   password: "",
-// };
-
-class SignUp extends React.Component {
-  state = {
-    credentials: {
+const initialUserCredentials = {
       firstName: "",
       lastName: "",
       email: "",
       username: "",
       password: "",
-      authCode: "",
-      isLoading: false,
-    },
-  };
+      authCode: ""
+};
 
-  handleChange = (e) => {
-    this.setState({
-      credentials: {
-        ...this.state.credentials,
+function SignUp() {
+  const [userCredentials, setUserCredentials] = useState(initialUserCredentials);
+  const [loginError, setLoginError]= useState("");
+  const {setUser} = useContext(UserContext);
+  const history = useHistory();
+
+  const handleChange = (e) => {
+    setUserCredentials({
+        ...userCredentials,
         [e.target.name]: e.target.value,
-      },
     });
   };
 
-  signup = (e) => {
+  const signup = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/api/signup", this.state.credentials)
+      .post("", userCredentials)
       .then((res) => {
         console.log(res);
-        localStorage.setItem("token", res.data.payload);
-        this.props.history.push("/");
+        localStorage.setItem("token", res.data.token);
+        setLoginError("");
+        setUser({username: userCredentials.username, id: res.data.user.id})
+        history.push("/MemberForm");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoginError('Ooops! Something went wrong.');
+      });
+      setUserCredentials(initialUserCredentials);
   };
 
   //Toggle funtionaity for instructor code   
-  ToggleButton() {
-    this.setState((currentState) => ({
-      textDisplay: currentState.textDisplay,
-    }));
-  }
+  // ToggleButton() {
+  //   this.setState((currentState) => ({
+  //     textDisplay: currentState.textDisplay,
+  //   }));
+  // }
 
-  render() {
     return (
       <div>
         <h1>Anywhere Fitness</h1>
         <h3>Get Your Workout In Anywhere</h3>
-        <form onSubmit={this.signup}>
+        <form onSubmit={signup}>
           <div className="signup-page">
             <div className="firstName-field">
               <label>
@@ -61,8 +62,8 @@ class SignUp extends React.Component {
                 <input
                   type="text"
                   name="firstName"
-                  value={this.state.credentials.firstName}
-                  onChange={this.handleChange}
+                  value={userCredentials.firstName}
+                  onChange={handleChange}
                 />
               </label>
             </div>
@@ -73,8 +74,8 @@ class SignUp extends React.Component {
                 <input
                   type="text"
                   name="lastName"
-                  value={this.state.credentials.lastName}
-                  onChange={this.handleChange}
+                  value={userCredentials.lastName}
+                  onChange={handleChange}
                 />
               </label>
             </div>
@@ -86,8 +87,8 @@ class SignUp extends React.Component {
                   type="text"
                   name="email"
                   placeholder='email'
-                  value={this.state.credentials.email}
-                  onChange={this.handleChange}
+                  value={userCredentials.email}
+                  onChange={handleChange}
                 />
               </label>
             </div>
@@ -99,8 +100,8 @@ class SignUp extends React.Component {
                   type="text"
                   name="username"
                   placeholder='username'
-                  value={this.state.credentials.username}
-                  onChange={this.handleChange}
+                  value={userCredentials.username}
+                  onChange={handleChange}
                 />
               </label>
             </div>
@@ -112,15 +113,15 @@ class SignUp extends React.Component {
                   type="password"
                   name="password"
                   placeholder='password'
-                  value={this.state.credentials.password}
-                  onChange={this.handleChange}
+                  value={userCredentials.password}
+                  onChange={handleChange}
                 />
               </label>
             </div>
 
             <div className="authCode-field">
             <label>Select</label>
-              <input type="select" value={this.state.credentials.authCode} onChange={this.handleChange}>
+              <input type="select" value={userCredentials.authCode} onChange={handleChange}>
                 <option value='instructor'>Instructor</option>
                 <option value='member'>Member</option>
             </input>
@@ -128,14 +129,12 @@ class SignUp extends React.Component {
             </div>
 
             <div className="signup-button">
-              <button onClick={() => this.ToggleButton()}>Sign Up</button>
-              {!this.state.textDisplay && this.props.text}
+              <button>Sign Up</button>
             </div>
           </div>
         </form>
       </div>
     );
   }
-}
 
 export default SignUp;
