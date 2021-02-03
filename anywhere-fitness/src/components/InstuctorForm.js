@@ -1,33 +1,40 @@
 import React, { useState } from "react";
-import * as yup from "yup";
-import axios from "axios";
 
 const formSchema = yup.object().shape({
+  name: "",
   time: "",
-  date: yup.string.required("Field required "),
+  date: "",
   duration: "",
   type: "",
   level: "",
-  location: yup.string.required("Field required"),
+  location: "",
+  numberOfAttendance: "",
+  maxAttendance: "",
 });
 
-const MemberForm = (props) => {
+const InstuctorForm = (props) => {
   const [form, setForm] = useState({
+    name: "",
     time: "",
     date: "",
     duration: "",
     type: "",
     level: "",
     location: "",
+    attendance: "",
+    maxAttendance: "",
   });
 
   const [errorState, setErrorState] = useState({
+    name: "",
     time: "",
     date: "",
     duration: "",
     type: "",
     level: "",
     location: "",
+    numberOfAttendance: "",
+    maxAttendance: "",
   });
 
   const validate = (e) => {
@@ -44,7 +51,6 @@ const MemberForm = (props) => {
         });
       });
   };
-
   const inputchange = (e) => {
     e.persist();
     validate(e);
@@ -60,7 +66,7 @@ const MemberForm = (props) => {
   };
 
   return (
-    <form onSubmit={submitForm}>
+    <form>
       <div>
         <label htmlFor="time">
           Time:
@@ -128,9 +134,28 @@ const MemberForm = (props) => {
         </label>
       </div>
       <div>
-        <button> search </button>
+        <label htmlFor="attendance">
+          Attendance
+          <input
+            type="text"
+            name="attendance"
+            value={form.attendance}
+            onChange={inputchange}
+          />
+        </label>
+      </div>
+      <div>
+        <label htmlFor="maxAttendance">
+          Max Attendance
+          <input
+            type="number"
+            name="maxAttendance"
+            value={form.maxAttendance}
+            onChange={inputchange}
+          />
+        </label>
       </div>
     </form>
   );
 };
-export default MemberForm;
+export default InstuctorForm;
