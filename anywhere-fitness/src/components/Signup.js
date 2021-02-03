@@ -1,6 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { UserContext } from '../contexts/UserContext';
 import axios from "axios";
 
 const initialUserCredentials = {
@@ -15,7 +14,6 @@ const initialUserCredentials = {
 function SignUp() {
   const [userCredentials, setUserCredentials] = useState(initialUserCredentials);
   const [loginError, setLoginError]= useState("");
-  const {setUser} = useContext(UserContext);
   const history = useHistory();
 
   const handleChange = (e) => {
@@ -33,7 +31,6 @@ function SignUp() {
         console.log(res);
         localStorage.setItem("token", res.data.token);
         setLoginError("");
-        setUser({username: userCredentials.username, id: res.data.user.id})
         history.push("/MemberForm");
       })
       .catch((err) => {
@@ -43,12 +40,13 @@ function SignUp() {
       setUserCredentials(initialUserCredentials);
   };
 
-  //Toggle funtionaity for instructor code   
-  // ToggleButton() {
-  //   this.setState((currentState) => ({
-  //     textDisplay: currentState.textDisplay,
+  //Toggle funtionaity for instructor code (still working on functionality)  
+  // ToggleButton = () => {
+  //   initialUserCredentials((userCredentials) => ({
+  //     textDisplay: userCredentials.textDisplay,
   //   }));
   // }
+  
 
     return (
       <div>
@@ -120,12 +118,12 @@ function SignUp() {
             </div>
 
             <div className="authCode-field">
-            <label>Select</label>
-              <input type="select" value={userCredentials.authCode} onChange={handleChange}>
-                <option value='instructor'>Instructor</option>
-                <option value='member'>Member</option>
-            </input>
-      
+              <label>Select Membership
+                <select>
+                  <option value='instructor'>Instructor</option>
+                  <option value='member'>Member</option>
+                </select>
+              </label>
             </div>
 
             <div className="signup-button">

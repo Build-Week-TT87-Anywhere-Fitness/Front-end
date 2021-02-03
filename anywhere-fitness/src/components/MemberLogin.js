@@ -1,6 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { UserContext } from '../contexts/UserContext';
 import axios from "axios";
 import * as yup from "yup";
 
@@ -18,7 +17,6 @@ const initialUserCredentials = {
 export default function InstructorLogin() {
   const [userCredentials, setUserCredentials] = useState(initialUserCredentials)
   const [error, setError] = useState("");
-  const {setUser} = useContext(UserContext);
   const history = useHistory();
 
   const validate = (e) => {
@@ -50,7 +48,6 @@ export default function InstructorLogin() {
         console.log("form submitted", response.data);
         const token = response.data.token;
         localStorage.setItem("token",token);
-        setUser({username: userCredentials.username, id: response.data.id});
         setError("");
         history.push("/MemberLogin");
       })

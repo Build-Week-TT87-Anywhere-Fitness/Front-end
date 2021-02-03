@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
 
 const formSchema = yup.object().shape({
   time: "",
-  date: yup.string.required("Field required "),
+  date: "",
   duration: "",
   type: "",
   level: "",
-  location: yup.string.required("Field required"),
+  location: "",
 });
 
-const MemberForm = (props) => {
+//Date and Location
+// yup.string.required("Field required ")
+// yup.string.required("Field required")
+
+const MemberForm = () => {
   const [form, setForm] = useState({
     search: "",
     time: "",
@@ -53,6 +57,7 @@ const MemberForm = (props) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  //Search for a class inputs that can be submitted
   const submitForm = (e) => {
     e.preventDefault();
     axios
@@ -60,6 +65,10 @@ const MemberForm = (props) => {
       .then((response) => console.log("form submitted", response))
       .catch((err) => console.log(err));
   };
+
+useEffect(() => {
+ 
+})
 
   return (
     <form onSubmit={submitForm}>
