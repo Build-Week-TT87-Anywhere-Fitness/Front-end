@@ -12,7 +12,7 @@ const Member = (props) => {
       <p>{detail.type}</p>
       <p>{detail.level}</p>
       <p>{detail.location}</p>
-      <p>{detail.numberOfAttendance}</p>
+      <p>{detail.attendance}</p>
       <p>{detail.maxAttendance}</p>
     </div>
   );
