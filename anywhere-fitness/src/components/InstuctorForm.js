@@ -155,11 +155,13 @@ const InstuctorForm = (props) => {
           />
         </label>
       </div>
+
       <div>
         <button> Edit </button>
         <button> Delete </button>
         <button> Submit </button>
       </div>
+
     </form>
   );
 };

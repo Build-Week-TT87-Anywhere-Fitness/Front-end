@@ -8,7 +8,7 @@ const formSchema = yup.object().shape({
   duration: "",
   type: "",
   level: "",
-  location: yup.string.required("Fiel required"),
+  location: yup.string.required("Field required"),
 });
 
 const MemberForm = (props) => {
@@ -46,6 +46,7 @@ const MemberForm = (props) => {
         });
       });
   };
+
   const inputchange = (e) => {
     e.persist();
     validate(e);

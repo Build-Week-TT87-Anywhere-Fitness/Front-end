@@ -1,154 +1,140 @@
-import React from "react";
-import axios from 'axios';
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { UserContext } from '../contexts/UserContext';
+import axios from "axios";
 
-class SignUp extends React.Component {
-    state = {
-        credentials: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            birthdate: '',
-            phoneNumber: '',
-            username: '',
-            password: '',
-            authCode: '',
-            isLoading: false
-        }
-    };
-
-    handleChange = e => {
-        this.setState({
-            credentials: {
-                ...this.state.credentials,
-                [e.target.name]: e.target.value
-            }
-        });
-    };
-
-    signup = e => {
-        e.preventDefault();
-        axios.post("http://localhost:5000/api/signup", this.state.credentials)
-            .then(res => {
-                console.log(res)
-                localStorage.setItem("token", res.data.payload);
-                this.props.history.push("/");
-            })
-            .catch(err => console.log(err));
-    };
-
-    render() {
-        return (
-            <div>
-                <h1>Anywhere Fitness</h1>
-                <h3>Get Your Workout In Anywhere</h3>
-                <form onSubmit={this.signup}>
-                    <div className="signup-page">
-
-                    <div className="firstName-field">
-                            <label>
-                                First Name: &nbsp;
-                        <input
-                                    type="text"
-                                    name="firstName"
-                                    value={this.state.credentials.firstName}
-                                    onChange={this.handleChange}
-                                />
-                            </label>
-                        </div>
-
-                        <div className="lastName-field">
-                            <label>
-                                Last Name: &nbsp;
-                        <input
-                                    type="text"
-                                    name="lastName"
-                                    value={this.state.credentials.lastName}
-                                    onChange={this.handleChange}
-                                />
-                            </label>
-                        </div>
-
-                        <div className="email-field">
-                            <label>
-                            Email: &nbsp;
-                        <input
-                                    type="text"
-                                    name="email"
-                                    value={this.state.credentials.email}
-                                    onChange={this.handleChange}
-                                />
-                            </label>
-                        </div>
-
-                        <div className="birthdate-field">
-                            <label>
-                            Birthdate: &nbsp;
-                        <input
-                                    type="text"
-                                    name="birthdate"
-                                    value={this.state.credentials.birthdate}
-                                    onChange={this.handleChange}
-                                />
-                            </label>
-                        </div>
-
-                        <div className="phoneNumber-field">
-                            <label>
-                            Phone Number: &nbsp;
-                        <input
-                                    type="text"
-                                    name="phoneNumber"
-                                    value={this.state.credentials.phoneNumber}
-                                    onChange={this.handleChange}
-                                />
-                            </label>
-                        </div>
-
-                        <div className="username-field">
-                            <label>
-                                Username: &nbsp;
-                        <input
-                                    type="text"
-                                    name="username"
-                                    value={this.state.credentials.username}
-                                    onChange={this.handleChange}
-                                />
-                            </label>
-                        </div>
-
-                        <div className="password-field">
-                            <label>
-                                Password: &nbsp;
-                        <input
-                                    type="password"
-                                    name="password"
-                                    value={this.state.credentials.password}
-                                    onChange={this.handleChange}
-                                />
-                            </label>
-                        </div>
-
-                        <div className="authCode-field">
-                            <label>
-                                Instructor Code: &nbsp;
-                        <input
-                                    type="text"
-                                    name="authCode"
-                                    value={this.state.credentials.authCode}
-                                    onChange={this.handleChange}
-                                />
-                            </label>
-                        </div>
-
-                        <div className="signup-button">
-                            <button>Sign Up</button>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
-        );
-    }
+const initialUserCredentials = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      username: "",
+      password: "",
+      authCode: ""
 };
+
+function SignUp() {
+  const [userCredentials, setUserCredentials] = useState(initialUserCredentials);
+  const [loginError, setLoginError]= useState("");
+  const {setUser} = useContext(UserContext);
+  const history = useHistory();
+
+  const handleChange = (e) => {
+    setUserCredentials({
+        ...userCredentials,
+        [e.target.name]: e.target.value,
+    });
+  };
+
+  const signup = (e) => {
+    e.preventDefault();
+    axios
+      .post("", userCredentials)
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("token", res.data.token);
+        setLoginError("");
+        setUser({username: userCredentials.username, id: res.data.user.id})
+        history.push("/MemberForm");
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoginError('Ooops! Something went wrong.');
+      });
+      setUserCredentials(initialUserCredentials);
+  };
+
+  //Toggle funtionaity for instructor code   
+  // ToggleButton() {
+  //   this.setState((currentState) => ({
+  //     textDisplay: currentState.textDisplay,
+  //   }));
+  // }
+
+    return (
+      <div>
+        <h1>Anywhere Fitness</h1>
+        <h3>Get Your Workout In Anywhere</h3>
+        <form onSubmit={signup}>
+          <div className="signup-page">
+            <div className="firstName-field">
+              <label>
+                First Name: &nbsp;
+                <input
+                  type="text"
+                  name="firstName"
+                  value={userCredentials.firstName}
+                  onChange={handleChange}
+                />
+              </label>
+            </div>
+
+            <div className="lastName-field">
+              <label>
+                Last Name: &nbsp;
+                <input
+                  type="text"
+                  name="lastName"
+                  value={userCredentials.lastName}
+                  onChange={handleChange}
+                />
+              </label>
+            </div>
+
+            <div className="email-field">
+              <label>
+                Email: &nbsp;
+                <input
+                  type="text"
+                  name="email"
+                  placeholder='email'
+                  value={userCredentials.email}
+                  onChange={handleChange}
+                />
+              </label>
+            </div>
+
+            <div className="username-field">
+              <label>
+                Username: &nbsp;
+                <input
+                  type="text"
+                  name="username"
+                  placeholder='username'
+                  value={userCredentials.username}
+                  onChange={handleChange}
+                />
+              </label>
+            </div>
+
+            <div className="password-field">
+              <label>
+                Password: &nbsp;
+                <input
+                  type="password"
+                  name="password"
+                  placeholder='password'
+                  value={userCredentials.password}
+                  onChange={handleChange}
+                />
+              </label>
+            </div>
+
+            <div className="authCode-field">
+            <label>Select</label>
+              <input type="select" value={userCredentials.authCode} onChange={handleChange}>
+                <option value='instructor'>Instructor</option>
+                <option value='member'>Member</option>
+            </input>
+      
+            </div>
+
+            <div className="signup-button">
+              <button>Sign Up</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    );
+  }
 
 export default SignUp;
