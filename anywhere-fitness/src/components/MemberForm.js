@@ -13,6 +13,7 @@ const formSchema = yup.object().shape({
 
 const MemberForm = (props) => {
   const [form, setForm] = useState({
+    search: "",
     time: "",
     date: "",
     duration: "",
@@ -22,6 +23,7 @@ const MemberForm = (props) => {
   });
 
   const [errorState, setErrorState] = useState({
+    search: "",
     time: "",
     date: "",
     duration: "",
@@ -128,7 +130,16 @@ const MemberForm = (props) => {
         </label>
       </div>
       <div>
-        <button> search </button>
+        <label>
+          <input
+            type="search"
+            name="search"
+            placeholder="search"
+            value={form.search}
+            onChange={inputchange}
+          />
+          <button> Search </button>
+        </label>
       </div>
     </form>
   );
