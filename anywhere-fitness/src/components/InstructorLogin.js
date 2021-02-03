@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { UserContext } from '../contexts/UserContext';
 import axios from "axios";
 import * as yup from "yup";
 
@@ -7,50 +9,59 @@ const formSchema = yup.object().shape({
   password: yup.string().required(" password is required "),
 });
 
-export default function Instructor() {
-  const [instuctorForm, setInstuctorForm] = useState({
-    username: "",
-    password: "",
-    authCode: "",
-  });
+const initialUserCredentials = {
+  username: "",
+  password: "",
+  authCode: "",
+};
 
-  const [errorState, setErrorState] = useState({
-    username: "",
-    password: "",
-    authCode: "",
-  });
+export default function InstructorLogin() {
+  const [userCredentials, setUserCredentials] = useState(initialUserCredentials)
+  const [error, setError] = useState("");
+  const {setUser} = useContext(UserContext);
+  const history = useHistory();
 
   const validate = (e) => {
     yup
       .reach(formSchema, e.target.name)
       .validate(e.target.value)
       .then((valid) => {
-        setErrorState({ ...errorState, [e.target.name]: "" });
+        setError({ ...error, [e.target.name]: "" });
       })
       .catch((err) => {
-        setErrorState({
-          ...errorState,
+        setError({
+          ...error,
           [e.target.name]: err.errors[0],
         });
       });
   };
 
-  const inputchange = (e) => {
+  const handleChange = (e) => {
     e.persist();
     validate(e);
-    setInstuctorForm({ ...instuctorForm, [e.target.name]: e.target.value });
+    setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
   };
 
-  const submitForm = (e) => {
+  const loginInstructor = (e) => {
     e.preventDefault();
     axios
-      .post("https://reqres.in/api/membership", instuctorForm)
-      .then((response) => console.log("form submitted", response))
-      .catch((err) => console.log(err));
-  };
+      .post("https://localhost:3000", userCredentials)
+      .then((response) => {
+        console.log("form submitted", response.data);
+        const token = response.data.token;
+        localStorage.setItem("token",token);
+        setUser({username: userCredentials.username, id: response.data.id});
+        setError("");
+        history.push("/InstructorLogin");
+      })
+      .catch((err) => {
+        console.log(err);
+        setError('User not found. Please signup.')
+      });
+  }
 
   return (
-    <form onSubmit={submitForm}>
+    <form onSubmit={loginInstructor}>
       <h2> Welecome, Please Sign In </h2>
       <div>
         <label htmlFor="username">
@@ -59,10 +70,10 @@ export default function Instructor() {
             type="text"
             id="username"
             name="username"
-            onChange={inputchange}
-            value={instuctorForm.username}
+            onChange={handleChange}
+            value={userCredentials.username}
           />
-          {errorState.password ? <p>{errorState.username}</p> : null}
+          {error.password ? <p>{error.username}</p> : null}
         </label>
       </div>
       <div>
@@ -72,10 +83,10 @@ export default function Instructor() {
             type="text"
             id="passowrd"
             name="password"
-            onChange={inputchange}
-            value={instuctorForm.password}
+            onChange={handleChange}
+            value={userCredentials.password}
           />
-          {errorState.password ? <p>{errorState.password}</p> : null}
+          {error.password ? <p>{error.password}</p> : null}
         </label>
       </div>
       <div>
@@ -85,10 +96,10 @@ export default function Instructor() {
             type="text"
             id="authCode"
             name="authCode"
-            onChange={inputchange}
-            value={instuctorForm.authCode}
+            onChange={handleChange}
+            value={userCredentials.authCode}
           />
-          {errorState.password ? <p>{errorState.authCode}</p> : null}
+          {error.password ? <p>{error.authCode}</p> : null}
         </label>
       </div>
       <div>

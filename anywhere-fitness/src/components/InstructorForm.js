@@ -1,34 +1,54 @@
-import React, { useState } from "react";
-import * as yup from "yup";
-import axios from "axios";
+import React, { useState, useContext, useEffect } from "react";
+import { UserContext } from '../contexts/UserContext';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+import axios from 'axios';
+import * as yup from 'yup';
 
 const formSchema = yup.object().shape({
+  name: "",
   time: "",
-  date: yup.string.required("Field required "),
+  date: "",
   duration: "",
   type: "",
   level: "",
-  location: yup.string.required("Field required"),
+  location: "",
+  numberOfAttendance: "",
+  maxAttendance: "",
 });
 
-const MemberForm = (props) => {
+const InstuctorForm = () => {
   const [form, setForm] = useState({
+    name: "",
     time: "",
     date: "",
     duration: "",
     type: "",
     level: "",
     location: "",
+    attendance: "",
+    maxAttendance: "",
   });
 
   const [errorState, setErrorState] = useState({
+    name: "",
     time: "",
     date: "",
     duration: "",
     type: "",
     level: "",
     location: "",
+    numberOfAttendance: "",
+    maxAttendance: "",
   });
+
+  const [newClass, setNewClass] = useState(form);
+  const [createNewClass, setCreateNewClass] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [buttonText, setButtonText] = useState();
+  const [editingId, setEditingId] = useState('');
+  const [formVaules, setFormValues] = useState();
+  const {user} = useContext(UserContext);
 
   const validate = (e) => {
     yup
@@ -51,16 +71,52 @@ const MemberForm = (props) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const submitForm = (e) => {
+  useEffect(() => {
+    
+  })
+
+//create initial form for a new class
+  const handleCreateForm = (e) => {
     e.preventDefault();
     axios
-      .post("https://reqres.in/api/membership", form)
+      .post("https://localhost:3000", form)
       .then((response) => console.log("form submitted", response))
       .catch((err) => console.log(err));
   };
 
+//edit functionality
+  const handleEdit = (id) => {
+    setIsEditing(true);
+    setButtonText('update instructor form');
+    setEditingId(id);
+    setFormValues(createNewClass.filter(MemberForm => MemberForm.id === id)[0]);
+  }
+
+//delete functionality
+  const handleDelete = (id) => {
+    axiosWithauth().delete(`${id}`)
+    .then(res => {
+      console.log('delete new class form from server', res.data);
+      axiosWithAuth().get('https://localhost:3000')
+      .then(res => {
+        console.log('reset state after delete', res.data);
+        const createNewClass = res.data.filter(MemberForm => MemberForm.newClass_id === newClass_id)
+      })
+    })
+    .catch(err => console.log(err));
+  }
+
+//update funtionality
+  const handleUpdate = () => {
+    console.log('intructor wants to update class')
+    setIsAdding(true);
+    setIsEditing(false);
+  }
+
+
+
   return (
-    <form onSubmit={submitForm}>
+    <form>
       <div>
         <label htmlFor="time">
           Time:
@@ -128,9 +184,28 @@ const MemberForm = (props) => {
         </label>
       </div>
       <div>
-        <button> search </button>
+        <label htmlFor="attendance">
+          Attendance
+          <input
+            type="text"
+            name="attendance"
+            value={form.attendance}
+            onChange={inputchange}
+          />
+        </label>
+      </div>
+      <div>
+        <label htmlFor="maxAttendance">
+          Max Attendance
+          <input
+            type="number"
+            name="maxAttendance"
+            value={form.maxAttendance}
+            onChange={inputchange}
+          />
+        </label>
       </div>
     </form>
   );
 };
-export default MemberForm;
+export default InstuctorForm;
