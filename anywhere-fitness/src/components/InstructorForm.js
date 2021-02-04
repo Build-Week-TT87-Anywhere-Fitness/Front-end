@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import { UserContext } from '../contexts/UserContext';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 import axios from 'axios';
 import * as yup from 'yup';
@@ -48,7 +47,6 @@ const InstuctorForm = () => {
   const [buttonText, setButtonText] = useState();
   const [editingId, setEditingId] = useState('');
   const [formVaules, setFormValues] = useState();
-  const {user} = useContext(UserContext);
 
   const validate = (e) => {
     yup
@@ -71,12 +69,13 @@ const InstuctorForm = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  //when component mounts 
   useEffect(() => {
     
   })
 
-//create initial form for a new class
-  const handleCreateForm = (e) => {
+//create/submit initial form for a new class
+  const handleSubmit = (e) => {
     e.preventDefault();
     axios
       .post("https://localhost:3000", form)
@@ -94,13 +93,13 @@ const InstuctorForm = () => {
 
 //delete functionality
   const handleDelete = (id) => {
-    axiosWithauth().delete(`${id}`)
+    axiosWithAuth().delete(`${id}`)
     .then(res => {
       console.log('delete new class form from server', res.data);
       axiosWithAuth().get('https://localhost:3000')
       .then(res => {
         console.log('reset state after delete', res.data);
-        const createNewClass = res.data.filter(MemberForm => MemberForm.newClass_id === newClass_id)
+        const createNewClass = res.data.filter(MemberForm => MemberForm.newClass_id === newClass.id)
       })
     })
     .catch(err => console.log(err));
@@ -111,9 +110,7 @@ const InstuctorForm = () => {
     console.log('intructor wants to update class')
     setIsAdding(true);
     setIsEditing(false);
-  }
-
-
+  };
 
   return (
     <form>
@@ -205,6 +202,13 @@ const InstuctorForm = () => {
           />
         </label>
       </div>
+
+      <div>
+        <button onClick={handleEdit}> Edit </button>
+        <button onClick={handleDelete}> Delete </button>
+        <button onClick={handleSubmit}> Submit </button>
+      </div>
+
     </form>
   );
 };

@@ -1,6 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+<<<<<<< HEAD
 import { UserContext } from "../contexts/UserContext";
+=======
+>>>>>>> 6ae2c7da39147747a0f3b946cb6526faf723f1fe
 import axios from "axios";
 import * as yup from "yup";
 
@@ -20,7 +23,10 @@ export default function InstructorLogin() {
     initialUserCredentials
   );
   const [error, setError] = useState("");
+<<<<<<< HEAD
   const { setUser } = useContext(UserContext);
+=======
+>>>>>>> 6ae2c7da39147747a0f3b946cb6526faf723f1fe
   const history = useHistory();
 
   const validate = (e) => {
@@ -51,8 +57,12 @@ export default function InstructorLogin() {
       .then((response) => {
         console.log("form submitted", response.data);
         const token = response.data.token;
+<<<<<<< HEAD
         localStorage.setItem("token", token);
         setUser({ username: userCredentials.username, id: response.data.id });
+=======
+        localStorage.setItem("token",token);
+>>>>>>> 6ae2c7da39147747a0f3b946cb6526faf723f1fe
         setError("");
         history.push("/InstructorLogin");
       })
