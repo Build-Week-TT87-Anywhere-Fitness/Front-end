@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { connect } from 'react-redux';
+import { loginInstructor } from '../actions/actions';
 import * as yup from "yup";
 
 const formSchema = yup.object().shape({
@@ -8,57 +8,48 @@ const formSchema = yup.object().shape({
   password: yup.string().required(" password is required "),
 });
 
-const initialUserCredentials = {
-  username: "",
-  password: "",
-  authCode: "",
-};
+function InstructorLogin({ loginInstructor, useHistory }) {
+  const [login, setLogin] = useState({
+    username: "",
+    password: ""
+  });
 
-export default function InstructorLogin() {
-  const [userCredentials, setUserCredentials] = useState(initialUserCredentials)
-  const [error, setError] = useState("");
-  const history = useHistory();
+  const [disabled, setDisabled] = useState(true);
+  const [error, setError] = useState({
+    username: "",
+    password: ""
+  });
+
 
   const validate = (e) => {
     yup
       .reach(formSchema, e.target.name)
       .validate(e.target.value)
-      .then((valid) => {
-        setError({ ...error, [e.target.name]: "" });
-      })
-      .catch((err) => {
-        setError({
-          ...error,
-          [e.target.name]: err.errors[0],
-        });
-      });
+      .then(() => setError({ ...error, [e.target.name]: "" }))
+      .catch((err) => setError({...error,[e.target.name]: err.errors[0],}));
   };
+
+  useEffect(() => {
+    formSchema.isValid(login).then(valid => setDisabled(!valid));
+  }, [login]);
 
   const handleChange = (e) => {
-    e.persist();
+    setLogin({ ...login, [e.target.name]: e.target.value });
     validate(e);
-    setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
   };
 
-  const loginInstructor = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("https://localhost:3000", userCredentials)
-      .then((response) => {
-        console.log("form submitted", response.data);
-        const token = response.data.token;
-        localStorage.setItem("token",token);
-        setError("");
-        history.push("/InstructorLogin");
-      })
-      .catch((err) => {
-        console.log(err);
-        setError('User not found. Please signup.')
-      });
-  }
+    loginInstructor(login, useHistory);
+    setLogin({
+      username:'',
+      password:''
+    });
+  };
+
 
   return (
-    <form onSubmit={loginInstructor}>
+    <form onSubmit={handleSubmit}>
       <h2> Welecome, Please Sign In </h2>
       <div>
         <label htmlFor="username">
@@ -68,9 +59,9 @@ export default function InstructorLogin() {
             id="username"
             name="username"
             onChange={handleChange}
-            value={userCredentials.username}
+            value={login.username}
           />
-          {error.password ? <p>{error.username}</p> : null}
+          <div>{error.username}</div>
         </label>
       </div>
       <div>
@@ -81,27 +72,24 @@ export default function InstructorLogin() {
             id="passowrd"
             name="password"
             onChange={handleChange}
-            value={userCredentials.password}
+            value={login.password}
           />
-          {error.password ? <p>{error.password}</p> : null}
+          <div>{error.password}</div>
         </label>
       </div>
       <div>
-        <label htmlFor="authCode">
-          Authorization:
-          <input
-            type="text"
-            id="authCode"
-            name="authCode"
-            onChange={handleChange}
-            value={userCredentials.authCode}
-          />
-          {error.password ? <p>{error.authCode}</p> : null}
-        </label>
-      </div>
-      <div>
-        <button> Login </button>
+        <button disabled={disabled}> login </button>
       </div>
     </form>
   );
 }
+
+const mapStateToProps = state => {
+	return {
+		state
+	};
+};
+
+const mapDispatchToProps = { loginInstructor };
+
+export default connect(mapStateToProps, mapDispatchToProps)(InstructorLogin);

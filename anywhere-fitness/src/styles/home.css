@@ -1,5 +1,4 @@
-
-.main-pitch {
+ .main-pitch {
   color: white;
   background-color: #6a0dad;
   padding-top: 24px;
@@ -11,12 +10,14 @@
 }
 
 h1 {
-  text-align: center;
+  text-align: center; 
+  font-size: 3rem; 
+  text-shadow: 2px 2px 4px #000000;
   /* padding-top: 2rem;
   padding-left: 2rem;
   padding-right: 2rem;
   margin-top: -2rem;
-  margin-right: -40rem; */
+  margin-right: -40rem;  */
 }
 
 body {
@@ -28,15 +29,18 @@ body {
   margin-left: 2rem;
   margin-right: 2rem;
   padding-bottom: 5rem;
+  border: 2px solid white;
+  padding: 3rem;
+  box-shadow: 3px 5px black;
 }
 
-.btn {
+ .btn {
   text-align: center;
   padding-top: 2rem;
 }
 
 button {
-  background-color: #4caf50; /* Green */
+  background-color: #4caf50; 
   border: none;
   color: white;
   padding: 15px 32px;
@@ -46,9 +50,15 @@ button {
   font-size: 16px;
 }
 
-.dummy-gallery {
+ .dummy-gallery {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+}  
+
+.copyright {
+  background-color: #6a0dad;
+  padding-top: 5rem;
+  margin-bottom: 5rem;
 }

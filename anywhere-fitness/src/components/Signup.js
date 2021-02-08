@@ -1,58 +1,89 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import * as yup from "yup";
 
-const initialUserCredentials = {
+
+const formSchema = yup.object().shape({
+  firstName: yup.string().required("firstName is required "),
+  lastName: yup.string().required("lastName is required "),
+  email: yup.string().required("email is required "),
+  username: yup.string().required("Username is required "),
+  password: yup.string().required(" password is required ")
+});
+
+export default function SignUp() {
+  const [signup, setSignup] = useState({
       firstName: "",
       lastName: "",
       email: "",
       username: "",
       password: "",
-      authCode: ""
-};
+      auth:'',
+      member: "",
+      instructor:''
+  });
 
-function SignUp() {
-  const [userCredentials, setUserCredentials] = useState(initialUserCredentials);
-  const [loginError, setLoginError]= useState("");
-  const history = useHistory();
+  const [signupComplete, setSignupComplete]  = useState([]);
+  const [disabled, setDisabled] = useState(true);
+  const [error, setError] = useState({
+      firstName: "",
+      lastName: "",
+      email: "",
+      username: "",
+      password: "",
+      auth:'',
+      member: "",
+      instructor:''
+  });
+
+  const validate = (e) => {
+    yup
+      .reach(formSchema, e.target.name)
+      .validate(e.target.value)
+      .then(() => setError({ ...error, [e.target.name]: "" }))
+      .catch((err) => setError({...error,[e.target.name]: err.errors[0],}));
+  };
+
+  useEffect(() => {
+    formSchema.isValid(signup).then(valid => setDisabled(!valid));
+  }, [signup]);
 
   const handleChange = (e) => {
-    setUserCredentials({
-        ...userCredentials,
-        [e.target.name]: e.target.value,
+    setSignup({ ...signup, [e.target.name]: e.target.value });
+    validate(e);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const signupCompleted = {
+      firstName: signup.firstName.trim(),
+      lastName: signup.lastName,
+      email: signup.email,
+      username: signup.username,
+      password:signup.password,
+      auth: signup.auth,
+      member: signup.member,
+      instructor: signup.instructor
+    };
+
+    setSignupComplete([...signupComplete, signupCompleted]);
+
+    setSignup({
+      firstName: "",
+      lastName: "",
+      email: "",
+      username: "",
+      password: "",
+      auth:'',
+      member: "",
+      instructor:''
     });
   };
-
-  const signup = (e) => {
-    e.preventDefault();
-    axios
-      .post("", userCredentials)
-      .then((res) => {
-        console.log(res);
-        localStorage.setItem("token", res.data.token);
-        setLoginError("");
-        history.push("/MemberForm");
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoginError('Ooops! Something went wrong.');
-      });
-      setUserCredentials(initialUserCredentials);
-  };
-
-  //Toggle funtionaity for instructor code (still working on functionality)  
-  // ToggleButton = () => {
-  //   initialUserCredentials((userCredentials) => ({
-  //     textDisplay: userCredentials.textDisplay,
-  //   }));
-  // }
   
 
     return (
       <div>
-        <h1>Anywhere Fitness</h1>
-        <h3>Get Your Workout In Anywhere</h3>
-        <form onSubmit={signup}>
+        <h3>Join Now</h3>
+        <form onSubmit={handleSubmit}>
           <div className="signup-page">
             <div className="firstName-field">
               <label>
@@ -60,7 +91,7 @@ function SignUp() {
                 <input
                   type="text"
                   name="firstName"
-                  value={userCredentials.firstName}
+                  value={signup.firstName}
                   onChange={handleChange}
                 />
               </label>
@@ -72,7 +103,7 @@ function SignUp() {
                 <input
                   type="text"
                   name="lastName"
-                  value={userCredentials.lastName}
+                  value={signup.lastName}
                   onChange={handleChange}
                 />
               </label>
@@ -85,7 +116,7 @@ function SignUp() {
                   type="text"
                   name="email"
                   placeholder='email'
-                  value={userCredentials.email}
+                  value={signup.email}
                   onChange={handleChange}
                 />
               </label>
@@ -98,7 +129,7 @@ function SignUp() {
                   type="text"
                   name="username"
                   placeholder='username'
-                  value={userCredentials.username}
+                  value={signup.username}
                   onChange={handleChange}
                 />
               </label>
@@ -111,28 +142,27 @@ function SignUp() {
                   type="password"
                   name="password"
                   placeholder='password'
-                  value={userCredentials.password}
+                  value={signup.password}
                   onChange={handleChange}
                 />
               </label>
             </div>
 
             <div className="authCode-field">
-              <label>Select Membership
+              <label value={signup.auth}>
+                Select Membership
                 <select>
-                  <option value='instructor'>Instructor</option>
-                  <option value='member'>Member</option>
+                  <option value={signup.instructor} name='instructor'>Instructor</option>
+                  <option value={signup.member} name='member'>Member</option>
                 </select>
               </label>
             </div>
 
             <div className="signup-button">
-              <button>Sign Up</button>
+              <button disabled={disabled}>Sign Up</button>
             </div>
           </div>
         </form>
       </div>
     );
   }
-
-export default SignUp;

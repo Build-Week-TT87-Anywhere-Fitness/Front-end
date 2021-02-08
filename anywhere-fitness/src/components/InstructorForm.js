@@ -1,6 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
-import { axiosWithAuth } from '../utils/axiosWithAuth';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { connect } from 'react-redux';
+import { formInstructor } from '../actions/actions';
+import { instructorEdit } from '../actions/actions';
+import { instructorDelete } from '../actions/actions';
 import * as yup from 'yup';
 
 const formSchema = yup.object().shape({
@@ -15,20 +17,8 @@ const formSchema = yup.object().shape({
   maxAttendance: "",
 });
 
-const InstuctorForm = () => {
-  const [form, setForm] = useState({
-    name: "",
-    time: "",
-    date: "",
-    duration: "",
-    type: "",
-    level: "",
-    location: "",
-    attendance: "",
-    maxAttendance: "",
-  });
-
-  const [errorState, setErrorState] = useState({
+function InstructorForm({ formInstructor, useHistory }) {
+  const [state, setState] = useState({
     name: "",
     time: "",
     date: "",
@@ -40,88 +30,71 @@ const InstuctorForm = () => {
     maxAttendance: "",
   });
 
-  const [newClass, setNewClass] = useState(form);
-  const [createNewClass, setCreateNewClass] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);
-  const [buttonText, setButtonText] = useState();
-  const [editingId, setEditingId] = useState('');
-  const [formVaules, setFormValues] = useState();
+  const [disabled, setDisabled] = useState(true);
+  const [error, setError] = useState({
+    name: "",
+    time: "",
+    date: "",
+    duration: "",
+    type: "",
+    level: "",
+    location: "",
+    numberOfAttendance: "",
+    maxAttendance: "",
+  });
+
 
   const validate = (e) => {
     yup
       .reach(formSchema, e.target.name)
       .validate(e.target.value)
-      .then((valid) => {
-        setErrorState({ ...errorState, [e.target.name]: "" });
-      })
-      .catch((err) => {
-        setErrorState({
-          ...errorState,
-          [e.target.name]: err.errors[0],
-        });
-      });
+      .then(() => setError({ ...error, [e.target.name]: "" }))
+      .catch((err) => setError({...error,[e.target.name]: err.errors[0],}));
   };
 
-  const inputchange = (e) => {
-    e.persist();
-    validate(e);
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  //when component mounts 
   useEffect(() => {
-    
-  })
+    formSchema.isValid(state).then(valid => setDisabled(!valid));
+  }, [state]);
 
-//create/submit initial form for a new class
+  const handleChange = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+    validate(e);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("https://localhost:3000", form)
-      .then((response) => console.log("form submitted", response))
-      .catch((err) => console.log(err));
+    formInstructor(state, useHistory);
+    setState({
+      username:'',
+      password:''
+    });
   };
 
-//edit functionality
-  const handleEdit = (id) => {
-    setIsEditing(true);
-    setButtonText('update instructor form');
-    setEditingId(id);
-    setFormValues(createNewClass.filter(MemberForm => MemberForm.id === id)[0]);
-  }
-
-//delete functionality
-  const handleDelete = (id) => {
-    axiosWithAuth().delete(`${id}`)
-    .then(res => {
-      console.log('delete new class form from server', res.data);
-      axiosWithAuth().get('https://localhost:3000')
-      .then(res => {
-        console.log('reset state after delete', res.data);
-        const createNewClass = res.data.filter(MemberForm => MemberForm.newClass_id === newClass.id)
-      })
-    })
-    .catch(err => console.log(err));
-  }
-
-//update funtionality
-  const handleUpdate = () => {
-    console.log('intructor wants to update class')
-    setIsAdding(true);
-    setIsEditing(false);
-  };
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
+      <h2> Welecome, Please Sign In </h2>
       <div>
-        <label htmlFor="time">
-          Time:
+        <label htmlFor="username">
+          Class Name:
           <input
             type="text"
+            id="username"
+            name="username"
+            onChange={handleChange}
+            value={state.name}
+          />
+          <div>{error.username}</div>
+        </label>
+      </div>
+      <div>
+      <label htmlFor="time">
+        Time:
+           <input
+            type="text"
             name="time"
-            value={form.time}
-            onChange={inputchange}
+            value={state.time}
+            onChange={handleChange}
           />
         </label>
       </div>
@@ -131,8 +104,8 @@ const InstuctorForm = () => {
           <input
             type="date"
             name="date"
-            value={form.date}
-            onChange={inputchange}
+            value={state.date}
+            onChange={handleChange}
           />
         </label>
       </div>
@@ -142,8 +115,8 @@ const InstuctorForm = () => {
           <input
             type="duration'"
             name="duration"
-            value={form.duration}
-            onChange={inputchange}
+            value={state.duration}
+            onChange={handleChange}
           />
         </label>
       </div>
@@ -153,8 +126,8 @@ const InstuctorForm = () => {
           <input
             type="text"
             name="type"
-            value={form.type}
-            onChange={inputchange}
+            value={state.type}
+            onChange={handleChange}
           />
         </label>
       </div>
@@ -164,8 +137,8 @@ const InstuctorForm = () => {
           <input
             type="text"
             name="level"
-            value={form.level}
-            onChange={inputchange}
+            value={state.level}
+            onChange={handleChange}
           />
         </label>
       </div>
@@ -175,8 +148,8 @@ const InstuctorForm = () => {
           <input
             type="text"
             name="loaction"
-            value={form.location}
-            onChange={inputchange}
+            value={state.location}
+            onChange={handleChange}
           />
         </label>
       </div>
@@ -186,8 +159,8 @@ const InstuctorForm = () => {
           <input
             type="text"
             name="attendance"
-            value={form.attendance}
-            onChange={inputchange}
+            value={state.attendance}
+            onChange={handleChange}
           />
         </label>
       </div>
@@ -197,19 +170,28 @@ const InstuctorForm = () => {
           <input
             type="number"
             name="maxAttendance"
-            value={form.maxAttendance}
-            onChange={inputchange}
+            value={state.maxAttendance}
+            onChange={handleChange}
           />
         </label>
       </div>
 
       <div>
-        <button onClick={handleEdit}> Edit </button>
-        <button onClick={handleDelete}> Delete </button>
-        <button onClick={handleSubmit}> Submit </button>
+        <button onClick={instructorEdit}> Edit </button>
+        <button onClick={instructorDelete}> Delete </button>
+        <button disabled={disabled}> Submit </button>
       </div>
-
     </form>
   );
+}
+
+const mapStateToProps = state => {
+	return {
+		state
+	};
 };
-export default InstuctorForm;
+
+const mapDispatchToProps = { formInstructor };
+
+export default connect(mapStateToProps, mapDispatchToProps)(InstructorForm);
+

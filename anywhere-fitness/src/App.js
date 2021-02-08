@@ -1,50 +1,40 @@
-import React, { useState } from "react";
-import { Route, Link } from "react-router-dom";
-import { InstructorContext } from './contexts/InstructorContext';
+import React from "react";
+import { Route, Switch } from "react-router-dom";
 import PrivateRoute from './utils/PrivateRoute';
 
-import SignUp from "./components/SignUp";
+import Navigation from './components/Navigation';
 import Home from "./components/Home";
+
+import SignUp from "./components/SignUp";
 import InstructorLogin from "./components/InstructorLogin";
 import MemberLogin from "./components/MemberLogin";
-import MemberForm from "./components/MemberForm";
+
 import InstructorForm from "./components/InstructorForm";
+import ClassList from "./components/ClassList";
 
 import "./App.css";
+import { Body } from './styles/styled-components';
 
-const initialUser = [{
-  id: '',
-  username: '',
-}]
 
 function App() {
-  const [user, setUser] = useState(initialUser);
-  const value = {user: user, setUser: setUser};
-
+  
   return (
+    <Body>
       <div className="App">
-        <div className="nav-bar">
-          <nav>
-            <Link to="/Home">Home</Link>
-            <Link to="/SignUp">Sign-Up</Link>
-            <Link to="/InstructorLogin">Instructor Login</Link>
-            <Link to="/MemberLogin">Member Login</Link>
-          </nav>
-        </div>
+        <Navigation />
+          <Switch>
+              <Route exact path="/Home" component={Home} />
+              <Route exact path="/SignUp" component={SignUp} />
+              <Route exact path="/InstructorLogin" component={InstructorLogin} />
+              <Route exact path="/MemberLogin" component={MemberLogin} />
 
-
-          <InstructorContext.Provider>
-          <Route exact path="/Home" component={Home} />
-          <Route exact path="/SignUp" component={SignUp} />
-          <Route exact path="/InstructorLogin" component={InstructorLogin} />
-          <Route exact path="/MemberLogin" component={MemberLogin} />
-
-          <PrivateRoute path="/InstructorForm" component={InstructorForm}>Instructors</PrivateRoute>
-          <PrivateRoute path="/MemberForm" component={MemberForm}>Members</PrivateRoute>
-
-          </InstructorContext.Provider>
-       
+            <PrivateRoute>
+              <Route path="/InstructorForm" component={InstructorForm}>Instructors</Route>
+              <Route path="/ClassList" component={ClassList}>Classes</Route>
+            </PrivateRoute>
+          </Switch>
       </div>
+    </Body>
   );
 }
 

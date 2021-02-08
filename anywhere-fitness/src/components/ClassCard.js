@@ -1,6 +1,6 @@
 import React from "react";
 
-const Member = (props) => {
+const ClassCard = (props) => {
   const { detail } = props;
 
   return (
@@ -17,4 +17,5 @@ const Member = (props) => {
     </div>
   );
 };
-export default Member;
+export default ClassCard;
+
