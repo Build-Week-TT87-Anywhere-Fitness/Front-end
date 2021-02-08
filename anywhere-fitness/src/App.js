@@ -17,22 +17,22 @@ import { Body } from './styles/styled-components';
 
 
 function App() {
-  
+
   return (
     <Body>
       <div className="App">
         <Navigation />
-          <Switch>
-              <Route exact path="/Home" component={Home} />
-              <Route exact path="/SignUp" component={SignUp} />
-              <Route exact path="/InstructorLogin" component={InstructorLogin} />
-              <Route exact path="/MemberLogin" component={MemberLogin} />
+        <Switch>
+          <Route exact path="/Home" component={Home} />
+          <Route exact path="/SignUp" component={SignUp} />
+          <Route exact path="/InstructorLogin" component={InstructorLogin} />
+          <Route exact path="/MemberLogin" component={MemberLogin} />
 
-            <PrivateRoute>
-              <Route path="/InstructorForm" component={InstructorForm}>Instructors</Route>
-              <Route path="/ClassList" component={ClassList}>Classes</Route>
-            </PrivateRoute>
-          </Switch>
+          <PrivateRoute>
+            <Route path="/InstructorForm" component={InstructorForm}>Instructors</Route>
+            <Route path="/ClassList" component={ClassList}>Classes</Route>
+          </PrivateRoute>
+        </Switch>
       </div>
     </Body>
   );

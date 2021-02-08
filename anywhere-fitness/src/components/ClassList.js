@@ -12,7 +12,7 @@ function ClassList({ fetchClass, classes }) {
 	useEffect(() => {
 		const id = JSON.parse(localStorage.getItem('userID'));
 		fetchClass(id);
-  }, []);
+  },[]);
   
   console.log(classes)
 
